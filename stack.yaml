@@ -1,6 +1,9 @@
-resolver: lts-6.0
+resolver: lts-7.18
 flags: {}
 extra-package-dbs: []
 packages:
 - location: '.'
-extra-deps: []
+- location:
+    git: git://github.com/aristidb/aws
+    commit: db3dd9e6c2708ff73777519b8014c16bc303000d
+  extra-dep: true
