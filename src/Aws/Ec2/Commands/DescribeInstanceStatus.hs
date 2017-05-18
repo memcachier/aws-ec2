@@ -13,7 +13,7 @@ import Data.Aeson.Types (typeMismatch)
 import qualified Data.Text as T
 
 import Aws.Ec2.TH
-import Aws.Ec2.Types
+import Aws.Ec2.Types (InstanceState)
 
 data DescribeInstanceStatus = DescribeInstanceStatus { dis_instanceIds :: [Text] }
                        deriving (Show)
