@@ -302,13 +302,13 @@ instance FromJSON Monitoring where
   parseJSON invalid = typeMismatch "Monitoring" invalid
 
 data StateReason = StateReason { srCode :: Maybe T.Text
-                               , srMessage :: T.Text}
+                               , srMessage :: Maybe T.Text}
                                deriving (Show)
 
 instance FromJSON StateReason where
   parseJSON (Object v) = StateReason <$>
     (v .:? "code" .!= Nothing) <*>
-    v .: "message"
+    (v .:? "message" .!= Nothing)
   parseJSON invalid = typeMismatch "StateReason" invalid
 
 data AvailabilityZone = AvailabilityZone { azRegionName :: T.Text
