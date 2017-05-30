@@ -301,13 +301,13 @@ instance FromJSON Monitoring where
   parseJSON (Object v) = Monitoring <$> v .: "state"
   parseJSON invalid = typeMismatch "Monitoring" invalid
 
-data StateReason = StateReason { srCode :: T.Text
+data StateReason = StateReason { srCode :: Maybe T.Text
                                , srMessage :: T.Text}
                                deriving (Show)
 
 instance FromJSON StateReason where
   parseJSON (Object v) = StateReason <$>
-    v .: "code" <*>
+    (v .:? "code" .!= Nothing) <*>
     v .: "message"
   parseJSON invalid = typeMismatch "StateReason" invalid
 
