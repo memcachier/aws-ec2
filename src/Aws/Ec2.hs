@@ -19,6 +19,7 @@ module Aws.Ec2 (
 , module Aws.Ec2.Commands.ImportKeyPair
 
 , module Aws.Ec2.Commands.DescribeInstances
+, module Aws.Ec2.Commands.DescribeReservedInstances
 , module Aws.Ec2.Commands.DescribeInstanceStatus
 , module Aws.Ec2.Commands.RunInstances
 , module Aws.Ec2.Commands.StartInstances
@@ -67,6 +68,7 @@ import Aws.Ec2.Commands.DescribeKeyPairs
 import Aws.Ec2.Commands.ImportKeyPair
 
 import Aws.Ec2.Commands.DescribeInstances
+import Aws.Ec2.Commands.DescribeReservedInstances
 import Aws.Ec2.Commands.DescribeInstanceStatus
 import Aws.Ec2.Commands.RunInstances
 import Aws.Ec2.Commands.StartInstances

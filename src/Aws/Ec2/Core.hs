@@ -25,7 +25,8 @@ type EC2Metadata = QueryMetadata
 type EC2Configuration = QueryAPIConfiguration
 
 defVersion :: HTTP.QueryItem
-defVersion = ("Version", Just "2014-06-15")
+-- defVersion = ("Version", Just "2014-06-15")
+defVersion = ("Version", Just "2016-11-15")
 
 ec2SignQuery :: HTTP.Query -> QueryAPIConfiguration qt -> SignatureData -> SignedQuery
 ec2SignQuery query QueryAPIConfiguration{..} sd = querySignQuery query qd sd

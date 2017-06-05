@@ -52,6 +52,7 @@ library
         Aws.Ec2.Commands.DescribeImages
         Aws.Ec2.Commands.DescribeInstanceStatus
         Aws.Ec2.Commands.DescribeInstances
+        Aws.Ec2.Commands.DescribeReservedInstances
         Aws.Ec2.Commands.DescribeKeyPairs
         Aws.Ec2.Commands.DescribePlacementGroups
         Aws.Ec2.Commands.DescribeRegions

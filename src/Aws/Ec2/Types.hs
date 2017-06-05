@@ -533,3 +533,53 @@ maybeToList Nothing = []
 readBool :: String -> Bool
 readBool (x:xs) = read $ toUpper x : map toLower xs
 readBool [] = error "Cannot read bool. String is empty."
+
+data ReservedInstance = ReservedInstance { riId :: T.Text
+                                         , riInstanceType :: T.Text
+                                         , riAvailabilityZone :: Maybe T.Text
+                                         , riStart :: T.Text
+                                         , riEnd :: T.Text
+                                         , riDuration :: Int
+                                         , riUsagePrice :: Double
+                                         , riFixedPrice :: Double
+                                         , riInstanceCount :: Int
+                                         , riProductDescription :: T.Text
+                                         , riState :: T.Text
+                                         , riInstanceTenancy :: T.Text
+                                         , riCurrencyCode :: T.Text
+                                         , riOfferingType :: T.Text
+                                         , riRecurringCharges :: Maybe [RecurringCharges]
+                                         , riOfferingClass :: Maybe T.Text
+                                         , riScope :: Maybe T.Text
+                                         } deriving (Show)
+
+data RecurringCharges = RecurringCharges { rcFrequency :: T.Text
+                                         , rcAmount :: Double
+                                         } deriving (Show)
+
+instance FromJSON ReservedInstance where
+  parseJSON (Object v) = ReservedInstance <$>
+    v .: "reservedInstancesId" <*>
+    v .: "instanceType" <*>
+    v .:? "availabilityZone" <*>
+    v .: "start" <*>
+    v .: "end" <*>
+    (read <$> v .: "duration") <*>
+    (read <$> v .: "usagePrice") <*>
+    (read <$> v .: "fixedPrice") <*>
+    (read <$> v .: "instanceCount") <*>
+    v .: "productDescription" <*>
+    v .: "state" <*>
+    v .: "instanceTenancy" <*>
+    v .: "currencyCode" <*>
+    v .: "offeringType" <*>
+    v .:? "recurringCharges" <*>
+    v .:? "offeringClass" <*>
+    v .:? "scope"
+  parseJSON invalid = typeMismatch "ReservedInstance" invalid
+
+instance FromJSON RecurringCharges where
+  parseJSON (Object v) = RecurringCharges <$>
+    v .: "frequency" <*>
+    (read <$> v .: "amount")
+  parseJSON invalid = typeMismatch "RecurringCharges" invalid
