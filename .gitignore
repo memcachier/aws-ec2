@@ -1,7 +1,9 @@
 /result
 /dist
+/dist-newstyle
 /.cabal-sandbox
 *.dyn_hi
 *.dyn_o
 *.hi
 .stack-work
+.ghc.environment*
