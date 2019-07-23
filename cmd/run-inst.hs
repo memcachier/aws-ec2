@@ -6,6 +6,7 @@ module Main where
 import Control.Monad
 import Data.Monoid
 import Options.Applicative
+import Options.Applicative.Types (Backtracking(..))
 
 import qualified Data.ByteString.Char8 as B
 import qualified Data.Text as T
@@ -27,6 +28,7 @@ configuration useMetadata = do
       Just cr' -> return Configuration { timeInfo = Timestamp
                                        , credentials = cr'
                                        , logger = defaultLog Warning
+                                       , proxy = Nothing
                                        }
   where
     load = if useMetadata then loadCredentialsFromInstanceMetadata
@@ -107,8 +109,10 @@ main = join $ customExecParser prefs opts
     prefs = ParserPrefs { prefMultiSuffix = ""
                         , prefDisambiguate = True
                         , prefShowHelpOnError = True
-                        , prefBacktrack = True
+                        , prefShowHelpOnEmpty = True
+                        , prefBacktrack = Backtrack
                         , prefColumns = 80
+                        , prefHelpLongEquals = True
                         }
 
     opts = parser `info` header "AWS Ec2 client"

@@ -93,6 +93,9 @@ data QueryMetadata = QueryMetadata
 instance Loggable QueryMetadata where
     toLogText (QueryMetadata r) = "Query: requestId=" <> fromMaybe "<none>" r
 
+instance Semigroup QueryMetadata where
+  (QueryMetadata r1) <> (QueryMetadata r2) = QueryMetadata (r1 `mplus` r2)
+
 instance Monoid QueryMetadata where
     mempty = QueryMetadata Nothing
     (QueryMetadata r1) `mappend` (QueryMetadata r2) = QueryMetadata (r1 `mplus` r2)

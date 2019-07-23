@@ -28,9 +28,9 @@ instance SignQuery DescribeLoadBalancerPolicyTypes where
 
 instance ResponseConsumer DescribeLoadBalancerPolicyTypes Value where
     type ResponseMetadata Value = QueryMetadata
-    responseConsumer ListLoadBalancerPolicyTypes = queryResponseConsumer $ \cu -> do
+    responseConsumer _ ListLoadBalancerPolicyTypes = queryResponseConsumer $ \cu -> do
       let cu' = cu $.// Cu.laxElement "PolicyTypeName" &| (toValue (XMLValueOptions "item") . Cu.node)
       return $ Array $ V.fromList cu'
-    responseConsumer (DescribeLoadBalancerPolicyTypes _) = queryResponseConsumer $ valueConsumerOpt (XMLValueOptions "member") "DescribeLoadBalancerPolicyTypesResult" fromJSONConsumer
+    responseConsumer _ (DescribeLoadBalancerPolicyTypes _) = queryResponseConsumer $ valueConsumerOpt (XMLValueOptions "member") "DescribeLoadBalancerPolicyTypesResult" fromJSONConsumer
 
 instance Transaction DescribeLoadBalancerPolicyTypes Value
