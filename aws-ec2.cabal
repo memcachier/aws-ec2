@@ -140,7 +140,7 @@ executable run-inst
         aws-ec2               >=0.3.4      &&  <0.4,
         yaml                  >=0.8.12     &&  <0.12,
         vector                >=0.10.12.3  &&  <0.13,
-        containers            >=0.5.5.1    &&  <0.6,
+        containers            >=0.5.5.1    &&  <0.7,
         unordered-containers  >=0.2.5.1    &&  <0.3,
         aeson                 >=0.8.0.2    &&  <1.5
     default-language: Haskell2010
