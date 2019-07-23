@@ -6,6 +6,7 @@
            , DeriveDataTypeable
            , MultiParamTypeClasses
            , FlexibleInstances
+           , CPP
            #-}
 
 module Aws.Query (
@@ -92,9 +93,11 @@ data QueryMetadata = QueryMetadata
 
 instance Loggable QueryMetadata where
     toLogText (QueryMetadata r) = "Query: requestId=" <> fromMaybe "<none>" r
-
+    
+#if __GLASGOW_HASKELL__ >= 804
 instance Semigroup QueryMetadata where
   (QueryMetadata r1) <> (QueryMetadata r2) = QueryMetadata (r1 `mplus` r2)
+#endif
 
 instance Monoid QueryMetadata where
     mempty = QueryMetadata Nothing
