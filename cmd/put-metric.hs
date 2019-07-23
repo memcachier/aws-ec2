@@ -5,7 +5,6 @@ module Main where
 import Control.Monad
 import Data.Monoid
 import Options.Applicative
-import Options.Applicative.Types (Backtracking(..))
 
 import qualified Data.ByteString.Char8 as B
 import qualified Data.Text as T
@@ -60,9 +59,8 @@ main = join $ customExecParser prefs opts
                         , prefDisambiguate = True
                         , prefShowHelpOnError = True
                         , prefShowHelpOnEmpty = True
-                        , prefBacktrack = Backtrack
+                        , prefBacktrack = True
                         , prefColumns = 80
-                        , prefHelpLongEquals = True
                         }
 
     opts = parser `info` header "AWS CloudWatch PutMetricData client"
