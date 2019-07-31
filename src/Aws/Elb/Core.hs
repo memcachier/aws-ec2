@@ -13,10 +13,9 @@ module Aws.Elb.Core (
 ) where
 
 import qualified Data.ByteString as B
-
-import qualified Network.HTTP.Conduit as HTTP
 import qualified Network.HTTP.Types as HTTP
-
+import qualified Text.XML.Cursor as Cu
+import qualified GHC.IORef as IOR
 import Aws.Core
 import Aws.Query
 
@@ -33,4 +32,7 @@ elbSignQuery query QueryAPIConfiguration{..} sd = querySignQuery query qd sd
 
 type ELBMetadata = QueryMetadata
 
+elbResponseConsumer :: (Cu.Cursor -> Response QueryMetadata a)
+                    -> IOR.IORef QueryMetadata
+                    -> HTTPResponseConsumer a
 elbResponseConsumer = queryResponseConsumer

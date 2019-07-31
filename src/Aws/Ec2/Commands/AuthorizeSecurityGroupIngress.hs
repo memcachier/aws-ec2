@@ -10,7 +10,6 @@ module Aws.Ec2.Commands.AuthorizeSecurityGroupIngress where
 
 import Data.Text (Text)
 import Aws.Ec2.TH
-import Aws.Ec2.Types
 
 data AuthorizeSecurityGroupIngress = AuthorizeSecurityGroupIngress
                { asi_groupId :: Text

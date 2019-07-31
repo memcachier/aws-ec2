@@ -15,12 +15,11 @@ module Aws.Elb.TH (
 , elbValueTransactionDef
 ) where
 
-import Language.Haskell.TH
-import Language.Haskell.TH.Lib
-import Language.Haskell.TH.Syntax
+import Language.Haskell.TH.Lib    (DecsQ, conT, stringE)
+import Language.Haskell.TH.Syntax (Name)
 
-import Data.Text (Text)
-import Data.Aeson.Types (FromJSON(..))
+import Data.Text                  (Text)
+import Data.Aeson.Types           (FromJSON(..))
 
 import Aws.Core
 import Aws.Query
@@ -31,9 +30,10 @@ elbValueTransaction :: Name -> String -> DecsQ
 elbValueTransaction ty tag = [d|
                   instance ResponseConsumer $(conT ty) Value where
                       type ResponseMetadata Value = QueryMetadata
-                      responseConsumer _ = queryResponseConsumer $ valueConsumerOpt (XMLValueOptions "member") $(stringE tag) fromJSONConsumer
+                      responseConsumer _ _ = queryResponseConsumer $ valueConsumerOpt (XMLValueOptions "member") $(stringE tag) fromJSONConsumer
 
                   instance Transaction $(conT ty) Value
                   |]
 
+elbValueTransactionDef :: Name -> Name -> String -> String -> DecsQ
 elbValueTransactionDef ty cons tag filterKey = queryValueTransactionDef ty cons tag 'elbSignQuery 'defVersion "member" filterKey

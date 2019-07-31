@@ -12,7 +12,6 @@ module Aws.Ec2.Commands.StopInstances where
 import Data.Text ()
 import Data.ByteString.Char8 (pack)
 import qualified Network.HTTP.Types as HTTP
-import Data.Monoid
 import Aws.Ec2.TH
 
 -- http://docs.aws.amazon.com/AWSEC2/latest/APIReference/ApiReference-query-StopInstances.html

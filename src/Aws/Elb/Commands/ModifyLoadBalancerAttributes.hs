@@ -9,6 +9,8 @@
 module Aws.Elb.Commands.ModifyLoadBalancerAttributes where
 
 import Aws.Elb.TH
+import Data.String (IsString)
+import Data.ByteString (ByteString)
 
 type S3BucketName = Text
 type S3BucketPrefix = Text
@@ -24,6 +26,7 @@ data ModifyLoadBalancerAttributes = ModifyLoadBalancerAttributes
                         , mlba_attributes :: [LoadBalancerAttribute]
                         } deriving (Show)
 
+attributeQuery :: IsString a => LoadBalancerAttribute -> [(a, Maybe ByteString)]
 attributeQuery (AccessLog False _ _ _)
       = [ ("LoadBalancerAttributes.AccessLog.Enabled", qBool False)
         ]
@@ -32,9 +35,9 @@ attributeQuery (AccessLog enabled interval bucket prefix)
         , ("LoadBalancerAttributes.AccessLog.EmitInterval", int interval)
         , ("LoadBalancerAttributes.AccessLog.S3BucketName", qArg bucket)
         , ("LoadBalancerAttributes.AccessLog.S3BucketPrefix", qArg prefix)
-        ] where int Min5 = qShow 5
-                int Min60 = qShow 60
-attributeQuery (ConnectionDraining False timeout)
+        ] where int Min5 = qShow (5 :: Integer)
+                int Min60 = qShow (60 :: Integer)
+attributeQuery (ConnectionDraining False _)
       = [ ("LoadBalancerAttributes.ConnectionDraining.Enabled", qBool False)
         ]
 attributeQuery (ConnectionDraining enabled timeout)

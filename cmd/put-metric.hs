@@ -21,6 +21,7 @@ configuration useMetadata = do
       Just cr' -> return Configuration { timeInfo = Timestamp
                                        , credentials = cr'
                                        , logger = defaultLog Warning
+                                       , proxy = Nothing
                                        }
   where
     load = if useMetadata then loadCredentialsFromInstanceMetadata
@@ -57,6 +58,7 @@ main = join $ customExecParser prefs opts
     prefs = ParserPrefs { prefMultiSuffix = ""
                         , prefDisambiguate = True
                         , prefShowHelpOnError = True
+                        , prefShowHelpOnEmpty = True
                         , prefBacktrack = True
                         , prefColumns = 80
                         }

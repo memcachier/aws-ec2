@@ -38,6 +38,7 @@ instance AsMemoryResponse Value where
 -- import Text.Show.Pretty (ppShow)
 --
 -- traceArg a = ppShow a `trace` a
+traceArg :: a -> a
 traceArg = id
 
 castValue :: FromJSON a => Value -> Maybe a
@@ -47,10 +48,11 @@ toValue :: XMLValueOptions -> Node -> Value
 toValue = value
 
 value :: XMLValueOptions -> Node -> Value
-value options (NodeElement e@Element{..}) = values options elementNodes
-value options (NodeContent c) = String c
-value options _ = Null
+value options (NodeElement e) = values options (elementNodes e)
+value _       (NodeContent c) = String c
+value _       _ = Null
 
+values :: XMLValueOptions -> [Node] -> Value
 values options elementNodes = uncurry (elementValues options) $ traceArg $ (elementKind options elementNodes, elementNodes)
 
 data ElementKind = ObjectLike
@@ -58,6 +60,7 @@ data ElementKind = ObjectLike
                  | Other
                  deriving (Show)
 
+elementKind :: XMLValueOptions -> [Node] -> ElementKind
 elementKind XMLValueOptions{..} nodes
   | isXMLArray = ArrayLike
   | isObject = ObjectLike
@@ -81,8 +84,16 @@ elementValues options Other ns = arrayOrValue $ fmap (value options) ns
     arrayOrValue [] = Null
     arrayOrValue a = array a
 
+forceElementName :: Node -> Text
 forceElementName = nameLocalName . elementName . unElement
+
+unElement :: Node -> Element
 unElement (NodeElement e) = e
+unElement (NodeInstruction _) = error "unElement required NodeElement but received NodeInstruction"
+unElement (NodeContent _) = error "unElement required NodeElement but received NodeContent"
+unElement (NodeComment _) = error "unElement required NodeElement but received NodeComment"
+
+array :: [Value] -> Value
 array = Array . V.fromList
 
 onlyElements :: [Node] -> [Node]

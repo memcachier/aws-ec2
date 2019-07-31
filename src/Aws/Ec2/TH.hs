@@ -29,6 +29,11 @@ import Aws.Ec2.Types
 import Aws.Query
 import Aws.Query.TH
 
+import Language.Haskell.TH.Lib (DecsQ)
+import Language.Haskell.TH.Syntax (Name)
+
+ec2ValueTransactionDef :: Name -> Name -> String -> String -> DecsQ
 ec2ValueTransactionDef ty cons tag filterKey = queryValueTransactionDef ty cons tag 'ec2SignQuery 'defVersion "item" filterKey
 
+ec2ValueTransaction :: Name -> String -> DecsQ
 ec2ValueTransaction = queryValueTransaction

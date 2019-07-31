@@ -6,6 +6,7 @@
            , DeriveDataTypeable
            , MultiParamTypeClasses
            , FlexibleInstances
+           , CPP
            #-}
 
 module Aws.Query (
@@ -41,13 +42,11 @@ import Data.ByteString.Char8 (ByteString)
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Char8 as B8
 import qualified Data.ByteString.Base16 as Base16
-import qualified Data.Text as T
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
 
 import Data.Aeson (FromJSON, Result (..), fromJSON)
 import Data.List
-import Data.Monoid
 import Data.Maybe
 import Data.IORef
 import Data.Typeable (Typeable)
@@ -92,6 +91,11 @@ data QueryMetadata = QueryMetadata
 
 instance Loggable QueryMetadata where
     toLogText (QueryMetadata r) = "Query: requestId=" <> fromMaybe "<none>" r
+    
+#if __GLASGOW_HASKELL__ >= 804
+instance Semigroup QueryMetadata where
+  (QueryMetadata r1) <> (QueryMetadata r2) = QueryMetadata (r1 `mplus` r2)
+#endif
 
 instance Monoid QueryMetadata where
     mempty = QueryMetadata Nothing
@@ -250,8 +254,9 @@ queryResponseConsumer inner md resp = xmlCursorConsumer parse md resp
 
 optional :: ByteString -> Maybe a -> (a -> Maybe ByteString) -> HTTP.Query
 optional k (Just x) f = [(k, f x)]
-optional k Nothing f = []
+optional _ Nothing  _ = []
 
+optionalA :: ByteString -> Maybe Text -> HTTP.Query
 optionalA k v = optional k v qArg
 
 enumerate :: String -> [a] -> (a -> Maybe ByteString) -> HTTP.Query
@@ -260,4 +265,4 @@ enumerate k xs f = [(B8.pack $ mconcat [k, ".", show n], f x) | (n, x) <- zip ([
 enumerateLists :: ByteString -> [HTTP.Query] -> HTTP.Query
 enumerateLists key xs = mconcat [prefix pairs $ mconcat [key, B8.pack $ show n, "."] | (n, pairs) <- zip ([1..] :: [Int]) xs]
   where
-    prefix xs p = [(mconcat [p, k], v) | (k, v) <- xs]
+    prefix xs' p = [(mconcat [p, k], v) | (k, v) <- xs']

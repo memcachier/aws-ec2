@@ -19,8 +19,6 @@ module Aws.Query.TH (
 ) where
 
 import Language.Haskell.TH
-import Language.Haskell.TH.Lib
-import Language.Haskell.TH.Syntax
 
 import Data.Text (Text)
 import Data.Aeson.Types (FromJSON(..))
@@ -41,7 +39,7 @@ queryValueTransactionDef ty cons tag signF version item filterKey = do
 
                   instance ResponseConsumer $(conT ty) Value where
                       type ResponseMetadata Value = QueryMetadata
-                      responseConsumer _ = queryResponseConsumer $ valueConsumerOpt (XMLValueOptions $(stringE item)) $(stringE tag) fromJSONConsumer
+                      responseConsumer _ _ = queryResponseConsumer $ valueConsumerOpt (XMLValueOptions $(stringE item)) $(stringE tag) fromJSONConsumer
 
                   instance Transaction $(conT ty) Value
                   |]
@@ -50,7 +48,7 @@ queryValueTransaction :: Name -> String -> DecsQ
 queryValueTransaction ty tag = [d|
                   instance ResponseConsumer $(conT ty) Value where
                       type ResponseMetadata Value = QueryMetadata
-                      responseConsumer _ = queryResponseConsumer $ valueConsumer $(stringE tag) fromJSONConsumer
+                      responseConsumer _ _ = queryResponseConsumer $ valueConsumer $(stringE tag) fromJSONConsumer
 
                   instance Transaction $(conT ty) Value
                   |]

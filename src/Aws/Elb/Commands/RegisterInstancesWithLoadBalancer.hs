@@ -8,7 +8,6 @@
 
 module Aws.Elb.Commands.RegisterInstancesWithLoadBalancer where
 
-import qualified Network.HTTP.Types as HTTP
 import Aws.Elb.TH
 import Aws.Elb.Types
 
