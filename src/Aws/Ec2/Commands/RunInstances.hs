@@ -12,10 +12,8 @@ module Aws.Ec2.Commands.RunInstances where
 import Control.Applicative ((<$>))
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8, decodeUtf8)
-import Data.ByteString.Char8 (pack, ByteString)
 import qualified Data.ByteString.Base64 as Base64
 import qualified Network.HTTP.Types as HTTP
-import Data.Monoid
 import Aws.Ec2.TH
 
 -- http://docs.aws.amazon.com/AWSEC2/latest/APIReference/ApiReference-query-RunInstances.html
@@ -311,7 +309,7 @@ instance SignQuery RunInstances where
                    +++ optional "InstanceInitiatedShutdownBehavior" run_instanceInitiatedShutdownBehavior qShow
                    +++ case run_subnetId of
                          Nothing -> enumerate "SecurityGroupId" run_securityGroupIds qArg
-                         Just subnetId -> [ ("NetworkInterface.0.DeviceIndex", qShow 0)
+                         Just subnetId -> [ ("NetworkInterface.0.DeviceIndex", qShow (0 :: Integer))
                                           , ("NetworkInterface.0.SubnetId", qArg subnetId)
                                           , ("NetworkInterface.0.AssociatePublicIpAddress", qShow run_associatePublicIpAddress)
                                           ] +++ enumerate "NetworkInterface.0.SecurityGroupId" run_securityGroupIds qArg

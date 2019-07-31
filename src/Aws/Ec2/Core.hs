@@ -15,11 +15,13 @@ module Aws.Ec2.Core (
 
 import qualified Data.ByteString as B
 
-import qualified Network.HTTP.Conduit as HTTP
 import qualified Network.HTTP.Types as HTTP
 
 import Aws.Core
 import Aws.Query
+
+import GHC.IORef (IORef)
+import Text.XML.Cursor (Cursor)
 
 type EC2Metadata = QueryMetadata
 type EC2Configuration = QueryAPIConfiguration
@@ -35,4 +37,5 @@ ec2SignQuery query QueryAPIConfiguration{..} sd = querySignQuery query qd sd
                    , qdService = "ec2"
                    }
 
+ec2ResponseConsumer :: (Cursor -> Response QueryMetadata a) -> IORef QueryMetadata -> HTTPResponseConsumer a
 ec2ResponseConsumer = queryResponseConsumer

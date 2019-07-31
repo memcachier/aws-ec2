@@ -1,3 +1,4 @@
+{-# OPTIONS -Wno-name-shadowing #-}
 {-# LANGUAGE TemplateHaskell  #-}
 
 module Aws.CloudWatch.Types where

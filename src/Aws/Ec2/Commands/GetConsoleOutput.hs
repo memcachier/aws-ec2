@@ -9,6 +9,7 @@
 module Aws.Ec2.Commands.GetConsoleOutput where
 
 import Data.Aeson (Value(..), FromJSON, (.:), parseJSON)
+import Data.Aeson.Types (prependFailure, typeMismatch)
 
 import Aws.Ec2.TH
 import GHC.Generics
@@ -29,6 +30,7 @@ instance FromJSON ConsoleOutput where
     v .: "instanceId" <*>
     v .: "timestamp" <*>
     v .: "output"
+  parseJSON invalid = prependFailure "parsing Coord failed, " (typeMismatch "Object" invalid)
 
 instance SignQuery GetConsoleOutput where
     type ServiceConfiguration GetConsoleOutput = EC2Configuration

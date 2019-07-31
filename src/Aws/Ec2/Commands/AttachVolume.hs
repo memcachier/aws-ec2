@@ -9,7 +9,6 @@
 module Aws.Ec2.Commands.AttachVolume where
 
 import Data.Text (Text)
-import Data.Monoid
 import Aws.Ec2.TH
 
 data AttachVolume = AttachVolume

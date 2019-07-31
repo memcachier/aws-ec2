@@ -1,3 +1,4 @@
+{-# OPTIONS -Wno-name-shadowing #-}
 {-# LANGUAGE TemplateHaskell
            , CPP
            #-}
@@ -41,9 +42,10 @@ derivePatchedShowRead name patch = do
                                                                                   ]) []]
                           ]
 
+patchPer :: [Char] -> [Char]
 patchPer s = go s False
   where
-    go [] started = []
+    go [] _ = []
     go ('P':'e':'r':xs) started@False = 'P' : 'e' : 'r' : go xs started
     go ('P':'e':'r':xs) started@True = '/' : go xs started
     go (x:xs) _ = x : go xs True

@@ -22,22 +22,18 @@
 -- response type and use that.
 module Aws.Ec2.Types where
 
-import Control.Applicative
 import Data.Aeson (Value (..), FromJSON, (.:), (.:?), (.!=), parseJSON)
 import Data.Aeson.Types (typeMismatch)
+import Data.ByteString (ByteString)
 import Data.Char (toUpper, toLower)
 import Data.IP (IPv4)
-import Data.Maybe (fromMaybe)
 import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Time.Clock (UTCTime)
-import Data.Monoid hiding (All)
-import Data.ByteString.Char8 (ByteString, pack)
 
 import Network.HTTP.Types as HTTP
 
 import Aws.Query
-import Aws.Ec2.Core
 
 
 -- EC2 Data Types
@@ -59,6 +55,7 @@ data EbsBlockDevice = EbsBlockDevice
                     , ebd_encrypted :: Bool
                     } deriving (Show)
 
+queryEbsBlockDevice :: EbsBlockDevice -> [(ByteString, Maybe ByteString)]
 queryEbsBlockDevice EbsBlockDevice{..} = [ ("VolumeType", qShow ebd_volumeType)
                                          -- , ("VolumeSize", qShow ebd_volumeSize)
                                          , ("Size", qShow ebd_volumeSize) -- RunInstances: VolumeSize

@@ -8,7 +8,7 @@
 
 module Aws.Ec2.Commands.AttachInternetGateway where
 
-import Data.Text (Text, pack, toLower)
+import Data.Text (Text)
 import Aws.Ec2.TH
 
 data AttachInternetGateway = AttachInternetGateway

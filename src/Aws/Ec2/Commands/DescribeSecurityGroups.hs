@@ -7,8 +7,7 @@
 
 module Aws.Ec2.Commands.DescribeSecurityGroups where
 
-import Data.Aeson (Value (..), FromJSON, (.:), parseJSON)
-import Data.Aeson.Types (typeMismatch)
+import Data.Aeson (FromJSON, parseJSON)
 
 import Aws.Ec2.TH
 

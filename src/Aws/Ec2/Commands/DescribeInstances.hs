@@ -8,7 +8,7 @@
 
 module Aws.Ec2.Commands.DescribeInstances where
 
-import Data.Aeson (Value (..), FromJSON, parseJSON)
+import Data.Aeson (FromJSON, parseJSON)
 
 import Aws.Ec2.TH
 

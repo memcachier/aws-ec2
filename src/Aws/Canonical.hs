@@ -13,4 +13,5 @@ canonicalSigData = do
                          , signatureCredentials = Credentials "" "" emptyRef Nothing
                          }
 
+baseTime :: UTCTime
 baseTime = UTCTime (toEnum 0) $ secondsToDiffTime 0

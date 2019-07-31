@@ -10,7 +10,6 @@
 module Aws.CloudWatch.Commands.PutMetricData where
 
 import Data.Text (Text)
-import Data.Monoid
 import Data.Time.Clock (UTCTime)
 import Aws.CloudWatch.Core
 import Aws.CloudWatch.Types
